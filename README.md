@@ -58,6 +58,8 @@ I will be importing data into RStudio for the remaining portion of data cleaning
 
 tidyverse is used for data analysis and obtaining quick visualization to gain insight easier janitor is used for cleaning rows and columns of empty values lubridate is used for easy date/time application
 
+I will use readxl library to read excel files of te cleaned data.
+
 ```{r}
 install.packages("tidyverse")
 install.packages("janitor")
@@ -65,22 +67,69 @@ install.packages("lubridate")
 library(tidyverse)
 library(janitor)
 library(lubridate)
+library(readxl)
 ```
 Then, I inputted the 12 data sets from my hard drive into R.
 
 ```{r}
-df1 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202101-divvy-tripdata.xlsx")
-df2 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202102-divvy-tripdata.xlsx")
-df3 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202103-divvy-tripdata.xlsx")
-df4 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202104-divvy-tripdata.xlsx")
-df5 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202105-divvy-tripdata.xlsx")
-df6 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202106-divvy-tripdata.xlsx")
-df7 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202107-divvy-tripdata.xlsx")
-df8 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202108-divvy-tripdata.xlsx")
-df9 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202109-divvy-tripdata.xlsx")
-df10 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202110-divvy-tripdata.xlsx")
-df11 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202111-divvy-tripdata.xlsx")
-df12 <- read.xlsx("E:\Data Analytics\Data Set\Cleaned Data/202112-divvy-tripdata.xlsx")
+df1 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202101-divvy-tripdata.xlsx")
+df2 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202102-divvy-tripdata.xlsx")
+df3 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202103-divvy-tripdata.xlsx")
+df4 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202104-divvy-tripdata.xlsx")
+df5 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202105-divvy-tripdata.xlsx")
+df6 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202106-divvy-tripdata.xlsx")
+df7 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202107-divvy-tripdata.xlsx")
+df8 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202108-divvy-tripdata.xlsx")
+df9 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202109-divvy-tripdata.xlsx")
+df10 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202110-divvy-tripdata.xlsx")
+df11 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202111-divvy-tripdata.xlsx")
+df12 <- read_excel("E:\\Data Analytics\\Data Set\\Cleaned Data\\202112-divvy-tripdata.xlsx")
+```
+
+Methods used to begin the analysis:
+
+- Consolidate the data sets into one so it is easier to work with
+- Clean the data set using janitor to make sure there are no blank values
+- Ensure columns are in correct data formats
+- Keep only the columns I need for my analysis
+
+With those in mind, I proceeded with the cleaning
+```{r}
+bike_rides <- rbind(df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11,df12)
+bike_rides <- janitor::remove_empty(bike_rides, which = c("cols"))
+bike_rides <- janitor::remove_empty(bike_rides, which = c("rows"))
+```
+Next, I used a few summary functions to see if the data are ready to be used.
+```{r}
+str(bike_rides)
+summary(bike_rides)
+```
+![summary](https://user-images.githubusercontent.com/58610546/151686351-cbe09e50-4f3b-4426-8bd8-e6c6d6cd7bcd.PNG)
+![str](https://user-images.githubusercontent.com/58610546/151686365-434844f2-e6d9-4daa-9585-2e1fb93a6216.PNG)
+
+All the column names are here, but I noticed in the summary() command that the started_by and ended_by columns are characters, instead of dttm format. So I used the following code to convert it:
+
+```{r}
+bike_rides$started_at <- as.POSIXct(bike_rides$started_at, format="%m/%d/%Y %H: %M")
+bike_rides$ended_at <- as.POSIXct(bike_rides$ended_at, format="%m/%d/%Y %H: %M")
+```
+Now, I can perform the difftime() function to get the ride duration of each rental. I also used the as.numberic() function to ensure we can perform statistical calculation on the column later.
+
+```{r}
+bike_rides$ride_length <- difftime(bike_rides$ended_at, bike_rides$started_at, units="mins")
+bike_rides$ride_length <- as.numeric(bike_rides$ride_length)
+```
+Now that we have ride_length in place, I want to expand the analysis beyond only the day of the week. Keeping in mind that our primary stakeholders are detail-oriented, I will break down the data into days and month. Since we are focusing on the pass 12 months of data, the calender year might not be as important. However, in case the stakeholders ask, I can add in another line of code for creating a year column.
+
+```{r}
+bike_rides$day <- weekdays(bike_rides$started_at)
+bike_rides$month <- months(bike_rides$started_at)
+bike_rides$year <- year(bike_rides$started_at)
+```
+Once those columns are created, I stopped and reviewed what I have.
+
+```{r}
+View(bike_rides)
 ```
 
 # Header 1
