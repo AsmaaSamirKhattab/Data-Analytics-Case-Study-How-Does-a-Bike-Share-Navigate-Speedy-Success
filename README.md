@@ -131,6 +131,7 @@ Once those columns are created, I stopped and reviewed what I have.
 ```{r}
 View(bike_rides)
 ```
+![view](https://user-images.githubusercontent.com/58610546/151687937-9f9786fe-1a9f-4224-8e06-7a2bb07f1ec0.PNG)
 
 # Header 1
 ## Header 2
