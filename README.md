@@ -133,6 +133,42 @@ View(bike_rides)
 ```
 ![view](https://user-images.githubusercontent.com/58610546/151687937-9f9786fe-1a9f-4224-8e06-7a2bb07f1ec0.PNG)
 
+Upon checking, I noticed from the filter function that the values range from -2000 to 56000. This could be due to technical difficulties, such as stations not capturing the returns correctly. Or the company took in bikes from different stations for repairing, and deployed them to the wrong station after. This would be a question to bring up during the next team meeting. For now, those negative values cleaned out.
+
+```{r}
+bike_rides <- filter(bike_rides, bike_rides$ride_length > 0)
+```
+
+I have also noticed that the start_lat, start_lng, end_lat, and end_lng are not necessary because one station could have multiple latitude and longitude. To double check if that is the case before I remove the columns, I used:
+
+```{r}
+name_lat_lng <- bike_rides %>%
+  select(start_station_name, start_lat, start_lng)
+View(name_lat_lng) 
+```
+
+After confirming that is the case, I removed the columns. Afterward, a quick check with the str() function.
+
+```{r}
+bike_rides <- bike_rides %>%
+  select(-c(start_lat, start_lng, end_lat, end_lng))
+str(bike_rides)
+```
+
+Excellent, the four columns are removed
+
+So far, the data looks to be ready for further analysis. We can obtain a few important stats by using aggregate():
+
+```{r}
+mean_member_casual <- aggregate(ride_length~member_casual, bike_rides, mean)
+max_member_casual <- aggregate(ride_length~member_casual, bike_rides, max)
+min_member_casual <- aggregate(ride_length~member_casual, bike_rides, min)
+mean_member_casual
+max_member_casual
+min_member_casual
+```
+Obviously, that will not satisfy our need. Those stats will at most give us a high level review of the data.
+
 # Header 1
 ## Header 2
 ### Header 3
