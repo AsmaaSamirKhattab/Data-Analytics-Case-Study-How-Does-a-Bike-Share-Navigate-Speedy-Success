@@ -194,7 +194,7 @@ ggplot(data=bike_rides)+
 I will export the cleaned data set so we can upload it to Tableau Public.
 
 ```{r}
-write.csv(bike_rides, "cleaned_case_1_data.csv")
+write.csv(bike_rides, "bike_rides_cleaned_case_1_data.csv")
 ```
 
 ## **Using [Tableau Public](https://public.tableau.com/s/)**
