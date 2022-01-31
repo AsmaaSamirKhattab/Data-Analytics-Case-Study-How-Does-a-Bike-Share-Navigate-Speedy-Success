@@ -169,6 +169,21 @@ min_member_casual
 ```
 Obviously, that will not satisfy our need. Those stats will at most give us a high level review of the data.
 
+### Visualization
+
+We could use the ggplot() function in R to create data viz by using ggplot(). However, due to the large amount of comparison in different matrices. I will mainly be using Tableau Public to create data viz since it is easier and more efficient to use.
+
+```{r}
+ggplot(data=bike_rides)+
+  geom_bar(mapping=aes(x=day_of_week_w, fill=member_casual))+
+  labs(
+    title="Number of Rental per Day of the Week",
+    x="Day of the Week",
+    y="Number of Rentals",
+    )
+```
+
+
 # Header 1
 ## Header 2
 ### Header 3
