@@ -1,24 +1,24 @@
-## Case Study: How Does a Bike-Share Navigate Speedy Success?
+# Case Study: How Does a Bike-Share Navigate Speedy Success?
 
-### Scenario
+## Scenario
 
 I am assigned as a junior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, my team wants to understand how casual riders and annual members use Cyclistic bikes differently. From these insights, your team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
 
-### Background:
+## Background:
 
 Cyclistic’s finance analysts have concluded that annual members are much more profitable than casual riders. My manager, Lily Moreno, believes that maximizing the number of annual members will be key to future growth. Rather than creating a marketing campaign that targets all-new customers, Moreno believes there is a very good chance to convert casual riders into members.
 
-### Stakeholders:
+## Stakeholders:
 
 Primary stakeholder: Cyclistic executive team: The notoriously detail-oriented executive team will decide whether to approve the recommended marketing program.
 
-#### Secondary stakeholder:
+### Secondary stakeholder:
 
 Lily Moreno: The director of marketing and your manager. Moreno is responsible for the development of campaigns and initiatives to promote the bike-share program. These may include email, social media, and other channels
 
 Cyclistic marketing analytics team: I joined this team of data analysts six months ago. We are responsible for collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy and help Cyclistic achieve them.
 
-### Objective:
+## Objective:
 
 Final goal for the marketing analytics team: Design marketing strategies aimed at converting casual riders into annual members.
 
@@ -38,7 +38,7 @@ In doing so, I hope to help stakeholders better understands:
       - Locations with the most rentals
       - Most popular bike types
 
-### Data Preparation:
+## Data Preparation:
 
 I will be using Cyclistic’s past 12 month's (January 2021 - December 2021) trip data to analyze and identify trends (Note: The datasets have a different name because Cyclistic is a fictional company. For the purposes of this case study, the datasets are appropriate and will enable you to answer the business questions. The data has been made available by Motivate International Inc. under this [license](https://ride.divvybikes.com/data-license-agreement)
 
@@ -46,7 +46,7 @@ The data are collected internally using Cyclistic's own system. Then, the data a
 
 We can safely assume that the data is non bias, reliable, original, current, and cited as it is collected internally by Cyclistic. It is also comprehensive, since the data are formatted in .csv files.
 
-### Data Processing:
+## Data Processing:
 
 The data are duplicated, and the raw data set is stored in a separate folder. The duplicated set is then reviewed in Microsoft Excel: 1) Reviewed the spreadsheets to get a good idea on what I have to work with. 2) Sorting and filtering: Removing numbers that are too big, too small, or values that does not belong in a column. Then, reveal “null”, or NA values in the columns using filters. By removing those rows, it would allow for smoother cleaning later. 3) Performed the duplicate removal function on all data sets. Afterward, I added three new columns:
 
@@ -105,6 +105,7 @@ str(bike_rides)
 summary(bike_rides)
 ```
 ![summary](https://user-images.githubusercontent.com/58610546/151686351-cbe09e50-4f3b-4426-8bd8-e6c6d6cd7bcd.PNG)
+
 ![str](https://user-images.githubusercontent.com/58610546/151686365-434844f2-e6d9-4daa-9585-2e1fb93a6216.PNG)
 
 All the column names are here, but I noticed in the summary() command that the started_by and ended_by columns are characters, instead of dttm format. So I used the following code to convert it:
@@ -155,6 +156,8 @@ bike_rides <- bike_rides %>%
 str(bike_rides)
 ```
 
+![strr](https://user-images.githubusercontent.com/58610546/151739185-faa4ecc5-61c8-41ab-9f78-d84b16b72cfe.PNG)
+
 Excellent, the four columns are removed
 
 So far, the data looks to be ready for further analysis. We can obtain a few important stats by using aggregate():
@@ -167,9 +170,12 @@ mean_member_casual
 max_member_casual
 min_member_casual
 ```
+
+![aggregate](https://user-images.githubusercontent.com/58610546/151739299-79a48c71-7166-41ad-871f-124f5c1f2005.PNG)
+
 Obviously, that will not satisfy our need. Those stats will at most give us a high level review of the data.
 
-### Visualization
+## Data Visualization
 
 We could use the ggplot() function in R to create data viz by using ggplot(). However, due to the large amount of comparison in different matrices. I will mainly be using Tableau Public to create data viz since it is easier and more efficient to use.
 
@@ -183,6 +189,28 @@ ggplot(data=bike_rides)+
     )
 ```
 
+![ggplot](https://user-images.githubusercontent.com/58610546/151739385-4cd49164-23b2-4597-8739-b68fa749c8bd.PNG)
+
+I will export the cleaned data set so we can upload it to Tableau Public.
+
+```{r}
+write.csv(bike_rides, "cleaned_case_1_data.csv")
+```
+
+## **Using [Tableau Public](https://public.tableau.com/s/)**
+
+By using Tableau, a public data visualization tool, I am able to create data viz with dragging and dropping different fields. This greatly improved efficiency.
+
+Let us recall the four matrices we will be evaluating the differences of member and causal riders with:
+
+- Frequency of rental
+- Average duration of rentals
+- Locations with the most rentals
+- Most popular bike types
+
+### Frequency
+
+The first difference we can observe is that casual riders have significantly more rental during Saturday and Sunday. Member riders have a more consistent level of bike usage throughout the week, with the lowest use on Sundays.
 
 # Header 1
 ## Header 2
